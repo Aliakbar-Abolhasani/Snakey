@@ -1,0 +1,50 @@
+﻿using Snakey.Components;
+using Unity.Entities;
+using Unity.Mathematics;
+using UnityEngine;
+using Utils;
+
+namespace Snakey.Systems
+{
+    [UpdateAfter(typeof(SnakePositionInitializationSystem))]
+    public partial struct SnakeMovementSystem : ISystem
+    {
+        private const float MoveDelay = 1f;
+        private float _timer;
+
+        public void OnCreate(ref SystemState state)
+        {
+            _timer = 1f;
+
+            state.RequireForUpdate<SnakePosition>();
+            state.RequireForUpdate<SnakeDirection>();
+        }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            var gameStatus = SystemAPI.GetSingleton<GameStatus>();
+            var snakePosBuffer = SystemAPI.GetSingletonBuffer<SnakePosition>();
+            var snakeDir = SystemAPI.GetSingletonRW<SnakeDirection>();
+            var bounds = SystemAPI.GetSingleton<GridBounds>().Bounds;
+
+            if (gameStatus.IsGameLost || snakeDir.ValueRO.MoveDirection is { x: 0, y: 0 })
+            {
+                return;
+            }
+
+            _timer += SystemAPI.Time.DeltaTime;
+            if (_timer < MoveDelay)
+            {
+                return;
+            }
+
+            _timer = 0;
+
+            var headPos = snakePosBuffer.ElementAt(snakePosBuffer.Length - 1);
+            var newHeadPos = headPos.Position + snakeDir.ValueRO.MoveDirection;
+            snakePosBuffer.Add(new SnakePosition { Position = newHeadPos });
+            SystemAPI.GetSingletonRW<LastRemovedSnakePosition>().ValueRW.Position = snakePosBuffer.ElementAt(0).Position;
+            snakePosBuffer.RemoveAt(0);
+        }
+    }
+}
