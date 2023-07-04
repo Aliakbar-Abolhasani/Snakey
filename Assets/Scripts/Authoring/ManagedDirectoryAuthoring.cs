@@ -14,7 +14,10 @@ namespace Snakey.Authoring
                 var entity = GetEntity(TransformUsageFlags.None);
                 if (Directory.Instance != null)
                 {
-                    AddComponentObject(entity, new ManagedDirectory { LineRenderer = Directory.Instance.LineRenderer });
+                    AddComponentObject(entity, new ManagedDirectory
+                    {
+                        LineRenderers = Directory.Instance.LineRenderers
+                    });
                 }
             }
         }

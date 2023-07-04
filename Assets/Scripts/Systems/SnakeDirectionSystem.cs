@@ -23,11 +23,11 @@ namespace Snakey.Systems
             var behindHeadPos = snakePosBuffer.ElementAt(snakePosBuffer.Length - 2);
 
             var userDirInput = GetDirectionFromUserInput();
-            if (userDirInput.x != 0 && headPos.Position.x + userDirInput.x != behindHeadPos.Position.x)
+            if (userDirInput.x != 0 && headPos.GridPosition.x + userDirInput.x != behindHeadPos.GridPosition.x)
             {
                 snakeDir.ValueRW.MoveDirection = userDirInput;
             }
-            else if (userDirInput.y != 0 && headPos.Position.y + userDirInput.y != behindHeadPos.Position.y)
+            else if (userDirInput.y != 0 && headPos.GridPosition.y + userDirInput.y != behindHeadPos.GridPosition.y)
             {
                 snakeDir.ValueRW.MoveDirection = userDirInput;
             }

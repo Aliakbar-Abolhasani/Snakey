@@ -46,7 +46,7 @@ namespace Snakey.Systems
             var occupiedPositions = new NativeList<int2>(5, Allocator.Temp);
             foreach (var snakePosition in snakePosBuffer)
             {
-                occupiedPositions.Add(snakePosition.Position);
+                occupiedPositions.Add(snakePosition.GridPosition);
             }
 
             foreach (var foodTr in SystemAPI.Query<LocalTransform>().WithAll<Food>())

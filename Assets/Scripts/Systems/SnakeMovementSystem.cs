@@ -41,9 +41,9 @@ namespace Snakey.Systems
             _timer = 0;
 
             var headPos = snakePosBuffer.ElementAt(snakePosBuffer.Length - 1);
-            var newHeadPos = headPos.Position + snakeDir.ValueRO.MoveDirection;
-            snakePosBuffer.Add(new SnakePosition { Position = newHeadPos });
-            SystemAPI.GetSingletonRW<LastRemovedSnakePosition>().ValueRW.Position = snakePosBuffer.ElementAt(0).Position;
+            var newHeadPos = headPos.GridPosition + snakeDir.ValueRO.MoveDirection;
+            snakePosBuffer.Add(new SnakePosition { GridPosition = GridUtils.GetCoordsInsideGrid(newHeadPos, bounds) });
+            SystemAPI.GetSingletonRW<LastRemovedSnakePosition>().ValueRW.Position = snakePosBuffer.ElementAt(0).GridPosition;
             snakePosBuffer.RemoveAt(0);
         }
     }

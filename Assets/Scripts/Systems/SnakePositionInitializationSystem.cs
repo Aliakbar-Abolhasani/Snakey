@@ -1,7 +1,6 @@
 ﻿using Snakey.Components;
 using Unity.Entities;
 using Unity.Mathematics;
-using Utils;
 
 namespace Snakey.Systems
 {
@@ -19,9 +18,9 @@ namespace Snakey.Systems
 
             var bounds = SystemAPI.GetSingleton<GridBounds>().Bounds;
             var snakePosBuffer = SystemAPI.GetSingletonBuffer<SnakePosition>();
-            snakePosBuffer.Add(new SnakePosition { Position = GridUtils.GetPosition(new int2(bounds.x / 2 - 2, bounds.y / 2), bounds) });
-            snakePosBuffer.Add(new SnakePosition { Position = GridUtils.GetPosition(new int2(bounds.x / 2 - 1, bounds.y / 2), bounds) });
-            snakePosBuffer.Add(new SnakePosition { Position = GridUtils.GetPosition(new int2(bounds.x / 2, bounds.y / 2), bounds) });
+            snakePosBuffer.Add(new SnakePosition { GridPosition = new int2(bounds.x / 2 - 2, bounds.y / 2) });
+            snakePosBuffer.Add(new SnakePosition { GridPosition = new int2(bounds.x / 2 - 1, bounds.y / 2) });
+            snakePosBuffer.Add(new SnakePosition { GridPosition = new int2(bounds.x / 2, bounds.y / 2) });
         }
     }
 }

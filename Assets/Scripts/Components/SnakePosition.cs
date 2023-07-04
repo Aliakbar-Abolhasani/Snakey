@@ -5,6 +5,6 @@ namespace Snakey.Components
 {
     public struct SnakePosition : IBufferElementData
     {
-        public int2 Position;
+        public int2 GridPosition;
     }
 }

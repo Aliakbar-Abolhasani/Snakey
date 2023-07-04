@@ -16,14 +16,14 @@ namespace Snakey.Systems
             var snakePositionBuffer = SystemAPI.GetSingletonBuffer<SnakePosition>();
 
             var lastRemovedSnakePosition = SystemAPI.GetSingletonRW<LastRemovedSnakePosition>().ValueRW.Position;
-            var tailPos = snakePositionBuffer[0].Position;
+            var tailPos = snakePositionBuffer[0].GridPosition;
 
             foreach (var (foodTr, foodEntity) in SystemAPI.Query<LocalTransform>().WithAll<Food>().WithEntityAccess())
             {
                 if ((int)foodTr.Position.x == tailPos.x && (int)foodTr.Position.y == tailPos.y)
                 {
                     var dir = lastRemovedSnakePosition - tailPos;
-                    snakePositionBuffer.Insert(0, new SnakePosition { Position = tailPos + dir });
+                    snakePositionBuffer.Insert(0, new SnakePosition { GridPosition = tailPos + dir });
                     ecb.DestroyEntity(foodEntity);
                     break;
                 }

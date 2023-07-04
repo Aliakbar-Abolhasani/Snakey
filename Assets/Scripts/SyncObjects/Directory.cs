@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Snakey.SyncObjects
@@ -6,7 +7,7 @@ namespace Snakey.SyncObjects
     {
         public static Directory Instance { get; private set; }
 
-        public LineRenderer LineRenderer;
+        public List<LineRenderer> LineRenderers;
 
         private void Awake()
         {

@@ -1,6 +1,9 @@
 ﻿using System.Numerics;
 using Snakey.Components;
 using Unity.Entities;
+using Unity.Mathematics;
+using UnityEngine;
+using Utils;
 using Vector3 = UnityEngine.Vector3;
 
 namespace Snakey.Systems
@@ -15,14 +18,30 @@ namespace Snakey.Systems
 
         public void OnUpdate(ref SystemState state)
         {
-            var lineRenderer = SystemAPI.ManagedAPI.GetSingleton<ManagedDirectory>().LineRenderer;
+            var managedDirectory = SystemAPI.ManagedAPI.GetSingleton<ManagedDirectory>();
             var snakePositionBuffer = SystemAPI.GetSingletonBuffer<SnakePosition>();
+            var bounds = SystemAPI.GetSingleton<GridBounds>().Bounds;
 
-            lineRenderer.positionCount = snakePositionBuffer.Length;
+            var lineRenderers = managedDirectory.LineRenderers;
+            lineRenderers.ForEach(r => r.positionCount = 0);
+
+            var rendererIndex = 0;
+            var rendererPosIndex = 0;
+            var currentRenderer = managedDirectory.LineRenderers[rendererIndex];
+            var previousGridPos = snakePositionBuffer[0].GridPosition;
             for (var i = 0; i < snakePositionBuffer.Length; i++)
             {
-                var pos = snakePositionBuffer[i].Position;
-                lineRenderer.SetPosition(i, new Vector3(pos.x, pos.y, 0));
+                var gridPos = snakePositionBuffer[i].GridPosition;
+                var worldPos = GridUtils.GridPosToPosition(gridPos, bounds);
+                if (!GridUtils.IsNextToOrTheSame(gridPos, previousGridPos))
+                {
+                    currentRenderer = managedDirectory.LineRenderers[++rendererIndex];
+                    rendererPosIndex = 0;
+                }
+
+                currentRenderer.positionCount++;
+                currentRenderer.SetPosition(rendererPosIndex++, new Vector3(worldPos.x, worldPos.y, 0));
+                previousGridPos = gridPos;
             }
         }
     }
