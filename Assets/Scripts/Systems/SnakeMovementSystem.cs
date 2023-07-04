@@ -9,12 +9,12 @@ namespace Snakey.Systems
     [UpdateAfter(typeof(SnakePositionInitializationSystem))]
     public partial struct SnakeMovementSystem : ISystem
     {
-        private const float MoveDelay = 1f;
+        private const float MoveDelay = 0.5f;
         private float _timer;
 
         public void OnCreate(ref SystemState state)
         {
-            _timer = 1f;
+            _timer = MoveDelay;
 
             state.RequireForUpdate<SnakePosition>();
             state.RequireForUpdate<SnakeDirection>();
@@ -27,7 +27,7 @@ namespace Snakey.Systems
             var snakeDir = SystemAPI.GetSingletonRW<SnakeDirection>();
             var bounds = SystemAPI.GetSingleton<GridBounds>().Bounds;
 
-            if (gameStatus.IsGameLost || snakeDir.ValueRO.MoveDirection is { x: 0, y: 0 })
+            if (gameStatus.Result == GameResult.Lost || snakeDir.ValueRO.MoveDirection is { x: 0, y: 0 })
             {
                 return;
             }

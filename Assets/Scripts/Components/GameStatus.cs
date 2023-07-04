@@ -2,8 +2,15 @@
 
 namespace Snakey.Components
 {
+    public enum GameResult
+    {
+        Undetermined,
+        Won,
+        Lost
+    }
+
     public struct GameStatus : IComponentData
     {
-        public bool IsGameLost;
+        public GameResult Result;
     }
 }

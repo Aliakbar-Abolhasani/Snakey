@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Snakey.Components;
+﻿using Snakey.Components;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -23,7 +22,7 @@ namespace Snakey.Systems
         public void OnUpdate(ref SystemState state)
         {
             var gameStatus = SystemAPI.GetSingleton<GameStatus>();
-            if (gameStatus.IsGameLost)
+            if (gameStatus.Result != GameResult.Undetermined)
             {
                 return;
             }

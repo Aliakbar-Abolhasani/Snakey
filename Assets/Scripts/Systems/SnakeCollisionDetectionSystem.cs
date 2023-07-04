@@ -17,8 +17,8 @@ namespace Snakey.Systems
                 var pos = snakePosBuffer[i].Position;
                 if (headPos.x == pos.x && headPos.y == pos.y)
                 {
-                    SystemAPI.GetSingletonRW<GameStatus>().ValueRW.IsGameLost = true;
                     Debug.Log("Lost");
+                    SystemAPI.GetSingletonRW<GameStatus>().ValueRW.Result = GameResult.Lost;
                     state.Enabled = false;
                 }
             }
