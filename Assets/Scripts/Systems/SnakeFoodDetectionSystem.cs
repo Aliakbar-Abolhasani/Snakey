@@ -10,6 +10,11 @@ namespace Snakey.Systems
     [UpdateBefore(typeof(SnakeRenderingSystem))]
     public partial struct SnakeFoodDetectionSystem : ISystem
     {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<SnakeCoords>();
+        }
+
         public void OnUpdate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Allocator.Temp);

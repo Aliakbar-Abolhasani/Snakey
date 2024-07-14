@@ -7,6 +7,11 @@ namespace Snakey.Systems
     [UpdateAfter(typeof(SnakeMovementSystem))]
     public partial struct SnakeCollisionDetectionSystem : ISystem
     {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<SnakeCoords>();
+        }
+
         public void OnUpdate(ref SystemState state)
         {
             var snakeCoordsBuffer = SystemAPI.GetSingletonBuffer<SnakeCoords>();
